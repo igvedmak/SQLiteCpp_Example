@@ -11,8 +11,14 @@ mkdir -p build
 cd build
 
 # Generate a Makefile for GCC (or Clang, depanding on CC/CXX envvar)
-cmake -DCMAKE_BUILD_TYPE=Debug ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DSQLITECPP_USE_ASAN=ON -DSQLITECPP_USE_GCOV=OFF -DSQLITECPP_BUILD_EXAMPLES=ON -DSQLITECPP_BUILD_TESTS=ON ..
 
 # Build (ie 'make')
 cmake --build .
 
+# Build and run unit-tests (ie 'make test')
+ctest --output-on-failure
+
+# And with Valgrind
+#valgrind --leak-check=full --error-exitcode=1 ./SQLiteCpp_example1
+#valgrind --leak-check=full --error-exitcode=1 ./SQLiteCpp_tests
